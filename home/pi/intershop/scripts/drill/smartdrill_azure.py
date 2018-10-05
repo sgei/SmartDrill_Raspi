@@ -1,3 +1,5 @@
+#!/usr/bin/python
+
 import sys, os, datetime, re, threading, traceback, subprocess
 
 import iothub_client
