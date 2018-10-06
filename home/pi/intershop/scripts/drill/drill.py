@@ -184,7 +184,7 @@ def battery_deglitch(pin, pin_state_required):
 
 # Interrupt routine
 def battery_buttonISR(pin, pin_state = -1):
-  global BATTERY_DEGLITCH
+  global BATTERY_DEGLITCH, COMMAND
 
   if not BATTERY_DEGLITCH is None:
     if pin_state == -1:

@@ -1,14 +1,15 @@
-# changed by ViSpro or manually
+# changed manually
 SKU=smart12345
-USAGE_TIME_MODE_1=0
-USAGE_TIME_MODE_2=0
-USAGE_TIME_MODE_3=0
 GPS_LATITUDE=50.928788
 GPS_LONGITUDE=11.584776
 # changed by Azure (via azure2.py)
 MODE=0
 LOCK_CLOUD=0
-# changed by drill.sh
+# changed by drill.py or manually
+LOCK_LOCAL=0
+USAGE_TIME_MODE_1=0
+USAGE_TIME_MODE_2=0
+USAGE_TIME_MODE_3=0
 ONLINE=0
 CAPACITY=100
 ENERGY_FULL_DESIGN=3200
@@ -19,6 +20,3 @@ HEALTH=Good
 STATUS=Full
 PRESENT=0
 TECHNOLOGY=Li-ion
-LOCK_LOCAL=0
-RESET=105
-SEQ=355
