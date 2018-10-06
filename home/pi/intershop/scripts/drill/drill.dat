@@ -2,7 +2,7 @@
 SKU=smart12345
 GPS_LATITUDE=50.928788
 GPS_LONGITUDE=11.584776
-# changed by Azure (via azure2.py)
+# changed by Azure (via smartdrill_azure.py)
 MODE=0
 LOCK_CLOUD=0
 # changed by drill.py or manually
