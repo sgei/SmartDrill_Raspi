@@ -2,8 +2,8 @@
 
 clear
 
-echo -e "\n### Deleting /var/lib/dhcp/dhclient.eth0.leases..."
-sudo rm -f /var/lib/dhcp/dhclient.eth0.leases
+#echo -e "\n### Deleting /var/lib/dhcp/dhclient.eth0.leases..."
+#sudo rm -f /var/lib/dhcp/dhclient.eth0.leases
 
 echo -e "\n### apt-get autoremove ..."
 sudo apt-get autoremove

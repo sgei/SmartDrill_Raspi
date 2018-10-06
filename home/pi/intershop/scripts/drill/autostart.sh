@@ -12,14 +12,25 @@ reset_file="reset.sh"
 
 #> $TEMP0
 
-# create Output-File
-touch $output_file
+# auf Standarddisplay ausfuehren
+if [ "${DISPLAY::2}" = ":0" ]
+then
 
-# start AZURE-Upload-Script
-lxterminal --working-directory=$path --command="python $azure_file"
+	# call RESET web service to reset showcase
+	curl http://deviceservicea.azurewebsites.net/devices/473095323502/reset
 
-sleep 10
+	sleep 5
 
-lxterminal --working-directory=$path --command="/bin/bash $reset_file"
+	# create Output-File
+	touch $output_file
+
+	# start AZURE-Upload-Script
+	lxterminal --working-directory=$path --command="python $azure_file" &
+
+	sleep 10
+
+	lxterminal --working-directory=$path --command="/bin/bash $reset_file" &
+
+fi
 
 #rm -rf $TEMP0

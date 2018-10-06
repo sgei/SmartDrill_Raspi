@@ -1,8 +1,0 @@
-@lxpanel --profile LXDE-pi
-@pcmanfm --desktop --profile LXDE-pi
-@xscreensaver -no-splash
-@point-rpi
-
-#@/home/pi/intershop/scripts/start_tightvncserver.sh start
-
-#@/home/pi/intershop/scripts/start_smartdrill.sh

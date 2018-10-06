@@ -51,7 +51,7 @@ echo -e "Done..."
 
 echo -e "\n### Install autostart script..."
 echo -e "\n\n# Intershop SmartDrill for Raspi" >> /home/pi/.config/lxsession/LXDE-pi/autostart
-echo "@/home/pi/intershop/scripts/start_smartdrill.sh" >> /home/pi/.config/lxsession/LXDE-pi/autostart
+echo "@/home/pi/intershop/scripts/drill/autostart.sh" >> /home/pi/.config/lxsession/LXDE-pi/autostart
 echo -e "Done..."
 
 echo -e "\n"
