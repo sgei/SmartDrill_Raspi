@@ -19,7 +19,7 @@ To get the VNC connection you need to download the [RealVNC Viewer](https://www.
 
 ### Insert Connection String in "smartdrill_azure.py"
 
-Add connection string to smartdrill_azure.py line 449:
+Add connection string to smartdrill_azure.py line 44:
 
 CONNECTION_STRING = 'HostName=**[NAME]**.azure-devices.net;DeviceId=**[ID]**;SharedAccessKey=**[KEY]**'
 
