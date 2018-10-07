@@ -49,9 +49,31 @@ else
 fi
 echo -e "Done..."
 
+echo -e "\n### Checking for inotify..."
+inotify=""
+inotify=`sudo pip freeze | grep -a -e "inotify" | grep -a -v "pyinotify"`
+
+if [ -z "$inotify" ]; then
+	echo "-> not installed"
+	echo "-> install package..."
+	sudo pip install --exists-action a inotify
+else
+	echo "-> package already installed"
+fi
+echo -e "Done..."
+
 echo -e "\n### Install autostart script..."
-echo -e "\n\n# Intershop SmartDrill for Raspi" >> /home/pi/.config/lxsession/LXDE-pi/autostart
-echo "@/home/pi/intershop/scripts/drill/autostart.sh" >> /home/pi/.config/lxsession/LXDE-pi/autostart
+autostart=""
+autostart=`cat /home/pi/.config/lxsession/LXDE-pi/autostart | grep -a -e "autostart.sh"`
+
+if [ -z "$autostart" ]; then
+	echo "-> autostart not configured"
+	echo "-> configure autostart..."
+	echo -e "\n\n# Intershop SmartDrill for Raspi" >> /home/pi/.config/lxsession/LXDE-pi/autostart
+	echo "@/home/pi/intershop/scripts/drill/autostart.sh" >> /home/pi/.config/lxsession/LXDE-pi/autostart
+else
+	echo "-> autostart already configures"
+fi
 echo -e "Done..."
 
 echo -e "\n"

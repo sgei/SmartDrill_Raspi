@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
 import sys, os, datetime, re, threading, traceback, subprocess
-
+import RPi.GPIO as GPIO
 import iothub_client
 import inotify.adapters, inotify.constants
 import json
@@ -13,6 +13,19 @@ try:
 
 except ( AttributeError, ):
   pass
+
+# LED Azure Sync #################################################################################
+LED1_PORT = 18
+GPIO.setwarnings(False)
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(LED1_PORT, GPIO.OUT)
+T1 = None
+T1_TIME = 1.0
+
+def t1_action():
+  GPIO.output(LED1_PORT, GPIO.LOW)
+
+##################################################################################################
 
 # ISO timestamp with UTC offset
 def get_timestamp():
@@ -309,6 +322,8 @@ def send_confirmation_callback(message, result, client):
       send_drill_val(client, DRILL_VAL_JSON)
 
 def send_drill_val(client, data):
+  global T1, T1_TIME
+
   if client.get_send_status() != iothub_client.IoTHubClientStatus.IDLE:
     return
 
@@ -323,8 +338,9 @@ def send_drill_val(client, data):
   )
   try:
     # Puls Azure LED
-    #subprocess.call(('', ))
-    pass
+    GPIO.output(LED1_PORT, GPIO.HIGH)
+    T1 = threading.Timer(T1_TIME, t1_action)
+    T1.start()
 
   except:
     traceback.print_exc()
@@ -345,6 +361,8 @@ def do_drill_val(client):
 DRILL_DAT_JSON = None
 
 def send_drill_dat(client, data):
+  global T1, T1_TIME
+
   if client.DEBUG:
     print >> sys.stderr, os.linesep.join(( 
       l.rstrip() 
@@ -356,8 +374,9 @@ def send_drill_dat(client, data):
   )
   try:
     # Puls Azure LED
-    #subprocess.call(('', ))
-    pass
+    GPIO.output(LED1_PORT, GPIO.HIGH)
+    T1 = threading.Timer(T1_TIME, t1_action)
+    T1.start()
 
   except:
     traceback.print_exc()
@@ -446,7 +465,7 @@ def device_twin_callback(update_state, payload, client):
         do_drill_dat(client, data)
 
 # SmartDrill connection string
-CONNECTION_STRING = ''
+CONNECTION_STRING = 'HostName=smartdevice.azure-devices.net;DeviceId=473095323502;SharedAccessKey=ucvW5DGGmjx5/zGh+mn61ryRenIgoHi7wegoMLlmE2g='
 def init_client(debug):
   # from iothub device sample
   def set_certificates(client):
