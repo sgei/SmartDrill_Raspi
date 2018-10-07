@@ -40,6 +40,9 @@ def get_timestamp():
 
 ### globals
 
+# SmartDrill connection string
+CONNECTION_STRING = ''
+
 DRILL_DAT = '/home/pi/intershop/scripts/drill/drill.dat'
 DRILL_DAT_LOCK = os.path.join(os.path.dirname(DRILL_DAT), '.' + os.path.basename(DRILL_DAT))
 DRILL_DAT_LOCK = DRILL_DAT
@@ -464,19 +467,7 @@ def device_twin_callback(update_state, payload, client):
         data = set_drill_dat(changes)
         do_drill_dat(client, data)
 
-# SmartDrill connection string
-CONNECTION_STRING = 'HostName=smartdevice.azure-devices.net;DeviceId=473095323502;SharedAccessKey=ucvW5DGGmjx5/zGh+mn61ryRenIgoHi7wegoMLlmE2g='
 def init_client(debug):
-  # from iothub device sample
-  def set_certificates(client):
-    from iothub_client_cert import CERTIFICATES
-    try:
-      client.set_option("TrustedCerts", CERTIFICATES)
-      print ( "set_option TrustedCerts successful" )
-
-    except ( iothub_client.IoTHubClientError, ), e:
-      print ( "set_option TrustedCerts failed (%s)" % e )
-
   client = iothub_client.IoTHubClient(
     CONNECTION_STRING, iothub_client.IoTHubTransportProvider.MQTT
   )
@@ -486,8 +477,6 @@ def init_client(debug):
   MESSAGE_TIMEOUT = 5000
   # set the time until a message times out
   client.set_option("messageTimeout", MESSAGE_TIMEOUT)
-
-  set_certificates(client)
 
   # to enable MQTT logging set to 1
   client.set_option("logtrace", int(bool(debug)))
