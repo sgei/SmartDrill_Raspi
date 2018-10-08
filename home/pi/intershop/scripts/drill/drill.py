@@ -95,7 +95,7 @@ def loop():
   LOCK_CLOUD = read_drill_dat('LOCK_CLOUD')
   LOCK_LOCAL = int(check_locked())
 
-  print "MODE=%d | LOCK_CLOUD=%d | LOCK_LOCAL=%d" % ( MODE, LOCK_CLOUD, LOCK_LOCAL )
+  print "MODE=%d | LOCK_CLOUD=%d | LOCK_LOCAL=%d | HEALTH=%d" % ( MODE, LOCK_CLOUD, LOCK_LOCAL, HEALTH )
 
 # ****************************************************************************************************
 # Button: DRILL
@@ -120,57 +120,67 @@ def drill_buttonISR(pin, pin_state = -1):
   if pin_state == -1:
     DRILL_DEGLITCH = threading.Timer(DEGLITCH_TIME, drill_deglitch, args = ( pin, GPIO.input(pin), ))
     DRILL_DEGLITCH.start()
-    return    
+    return
 
   # button pressed
   if pin_state:
 
-    DRILL_TIME = time.time()
+    if ( LOCK_LOCAL == 0 ) and ( LOCK_CLOUD == 0 ) {
 
-    if MODE == 1:
-      GPIO.output(LED_MODE1_PORT, GPIO.HIGH)
-      GPIO.output(LED_MODE2_PORT, GPIO.LOW)
-      GPIO.output(LED_MODE3_PORT, GPIO.LOW)
-      print "MODE = %d" % MODE
-    elif MODE == 2:
-      GPIO.output(LED_MODE1_PORT, GPIO.LOW)
-      GPIO.output(LED_MODE2_PORT, GPIO.HIGH)
-      GPIO.output(LED_MODE3_PORT, GPIO.LOW)
-      print "MODE = %d" % MODE
-    elif MODE == 3:
-      GPIO.output(LED_MODE1_PORT, GPIO.LOW)
-      GPIO.output(LED_MODE2_PORT, GPIO.LOW)
-      GPIO.output(LED_MODE3_PORT, GPIO.HIGH)
-      print "MODE = %d" % MODE
-    else:
-      GPIO.output(LED_MODE1_PORT, GPIO.LOW)
-      GPIO.output(LED_MODE2_PORT, GPIO.LOW)
-      GPIO.output(LED_MODE3_PORT, GPIO.LOW)
-      print "MODE = %d" % MODE
+      DRILL_TIME = time.time()
+
+      if MODE == 1:
+        GPIO.output(LED_MODE1_PORT, GPIO.HIGH)
+        GPIO.output(LED_MODE2_PORT, GPIO.LOW)
+        GPIO.output(LED_MODE3_PORT, GPIO.LOW)
+        print "MODE = %d" % MODE
+      elif MODE == 2:
+        GPIO.output(LED_MODE1_PORT, GPIO.LOW)
+        GPIO.output(LED_MODE2_PORT, GPIO.HIGH)
+        GPIO.output(LED_MODE3_PORT, GPIO.LOW)
+        print "MODE = %d" % MODE
+      elif MODE == 3:
+        GPIO.output(LED_MODE1_PORT, GPIO.LOW)
+        GPIO.output(LED_MODE2_PORT, GPIO.LOW)
+        GPIO.output(LED_MODE3_PORT, GPIO.HIGH)
+        print "MODE = %d" % MODE
+      else:
+        GPIO.output(LED_MODE1_PORT, GPIO.LOW)
+        GPIO.output(LED_MODE2_PORT, GPIO.LOW)
+        GPIO.output(LED_MODE3_PORT, GPIO.LOW)
+        print "MODE = %d" % MODE
+
+     }
 
   # button released
   else:
     GPIO.output(LED_MODE1_PORT, GPIO.LOW)
     GPIO.output(LED_MODE2_PORT, GPIO.LOW)
     GPIO.output(LED_MODE3_PORT, GPIO.LOW)
-    DRILL_TIME = time.time() - DRILL_TIME
 
-    if MODE == 1:
-      MODE1_TIME = int(MODE1_TIME) + int(DRILL_TIME)
-      print "MODE = %d | DRILL_TIME = %d | MODE%d_TIME = %d" % ( MODE, DRILL_TIME, MODE, MODE1_TIME )
-      COMMAND = "sed -i 's/USAGE_TIME_MODE_" + str(MODE) + "=.*/USAGE_TIME_MODE_" + str(MODE) + "=" + str(MODE1_TIME) + "/' " + str(DAT_FILE)
-    elif MODE == 2:
-      MODE2_TIME = int(MODE2_TIME) + int(DRILL_TIME)
-      print "MODE = %d | DRILL_TIME = %d | MODE%d_TIME = %d" % ( MODE, DRILL_TIME, MODE, MODE2_TIME )
-      COMMAND = "sed -i 's/USAGE_TIME_MODE_" + str(MODE) + "=.*/USAGE_TIME_MODE_" + str(MODE) + "=" + str(MODE2_TIME) + "/' " + str(DAT_FILE)
-    elif MODE == 3:
-      MODE3_TIME = int(MODE3_TIME) + int(DRILL_TIME)
-      print "MODE = %d | DRILL_TIME = %d | MODE%d_TIME = %d" % ( MODE, DRILL_TIME, MODE, MODE3_TIME )
-      COMMAND = "sed -i 's/USAGE_TIME_MODE_" + str(MODE) + "=.*/USAGE_TIME_MODE_" + str(MODE) + "=" + str(MODE3_TIME) + "/' " + str(DAT_FILE)
-    else:
-      pass
+    if ( LOCK_LOCAL == 0 ) and ( LOCK_CLOUD == 0 ) {
 
-    write_drill_dat()
+      DRILL_TIME = time.time() - DRILL_TIME
+
+      if MODE == 1:
+        MODE1_TIME = int(MODE1_TIME) + ( int(DRILL_TIME) * 1 )
+        print "MODE = %d | DRILL_TIME = %d | MODE%d_TIME = %d" % ( MODE, DRILL_TIME, MODE, MODE1_TIME )
+        COMMAND = "sed -i 's/USAGE_TIME_MODE_" + str(MODE) + "=.*/USAGE_TIME_MODE_" + str(MODE) + "=" + str(MODE1_TIME) + "/' " + str(DAT_FILE)
+        write_drill_dat()
+      elif MODE == 2:
+        MODE2_TIME = int(MODE2_TIME) + ( int(DRILL_TIME) * 2 )
+        print "MODE = %d | DRILL_TIME = %d | MODE%d_TIME = %d" % ( MODE, DRILL_TIME, MODE, MODE2_TIME )
+        COMMAND = "sed -i 's/USAGE_TIME_MODE_" + str(MODE) + "=.*/USAGE_TIME_MODE_" + str(MODE) + "=" + str(MODE2_TIME) + "/' " + str(DAT_FILE)
+        write_drill_dat()
+      elif MODE == 3:
+        MODE3_TIME = int(MODE3_TIME) + ( int(DRILL_TIME) * 3 )
+        print "MODE = %d | DRILL_TIME = %d | MODE%d_TIME = %d" % ( MODE, DRILL_TIME, MODE, MODE3_TIME )
+        COMMAND = "sed -i 's/USAGE_TIME_MODE_" + str(MODE) + "=.*/USAGE_TIME_MODE_" + str(MODE) + "=" + str(MODE3_TIME) + "/' " + str(DAT_FILE)
+        write_drill_dat()
+      else:
+        pass
+
+     }
 
 # ****************************************************************************************************
 # Button: BATTERY    
@@ -195,7 +205,7 @@ def battery_buttonISR(pin, pin_state = -1):
   if pin_state == -1:
     BATTERY_DEGLITCH = threading.Timer(DEGLITCH_TIME, battery_deglitch, args = ( pin, GPIO.input(pin), ))
     BATTERY_DEGLITCH.start()
-    return    
+    return
 
   # button pressed
   if pin_state:
