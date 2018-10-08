@@ -95,7 +95,7 @@ def loop():
   LOCK_CLOUD = read_drill_dat('LOCK_CLOUD')
   LOCK_LOCAL = int(check_locked())
 
-  print "MODE=%d | LOCK_CLOUD=%d | LOCK_LOCAL=%d | HEALTH=%d" % ( MODE, LOCK_CLOUD, LOCK_LOCAL, HEALTH )
+  print "MODE=%d | LOCK_CLOUD=%d | LOCK_LOCAL=%d" % ( MODE, LOCK_CLOUD, LOCK_LOCAL )
 
 # ****************************************************************************************************
 # Button: DRILL
@@ -125,7 +125,7 @@ def drill_buttonISR(pin, pin_state = -1):
   # button pressed
   if pin_state:
 
-    if ( LOCK_LOCAL == 0 ) and ( LOCK_CLOUD == 0 ) {
+    if ( LOCK_LOCAL == 0 ) and ( LOCK_CLOUD == 0 ):
 
       DRILL_TIME = time.time()
 
@@ -150,15 +150,13 @@ def drill_buttonISR(pin, pin_state = -1):
         GPIO.output(LED_MODE3_PORT, GPIO.LOW)
         print "MODE = %d" % MODE
 
-     }
-
   # button released
   else:
     GPIO.output(LED_MODE1_PORT, GPIO.LOW)
     GPIO.output(LED_MODE2_PORT, GPIO.LOW)
     GPIO.output(LED_MODE3_PORT, GPIO.LOW)
 
-    if ( LOCK_LOCAL == 0 ) and ( LOCK_CLOUD == 0 ) {
+    if ( LOCK_LOCAL == 0 ) and ( LOCK_CLOUD == 0 ):
 
       DRILL_TIME = time.time() - DRILL_TIME
 
@@ -179,8 +177,6 @@ def drill_buttonISR(pin, pin_state = -1):
         write_drill_dat()
       else:
         pass
-
-     }
 
 # ****************************************************************************************************
 # Button: BATTERY    
