@@ -3,6 +3,5 @@
 	"version": "1.0.0",
 	"description": "Intershop Smartdrill Ethereum",
 	"repository": "gitlab:user/repo",
-	"license": "UNLICENSED",
-	"dependencies": {}
+	"license": "UNLICENSED"
 }

@@ -7,7 +7,7 @@ SPATH="$HOME/intershop/scripts"
 DPATH="$HOME/intershop/scripts/drill"
 VAR=""
 
-clean() {
+f_clear() {
 	clear
 
 	sudo apt-get autoremove
@@ -19,7 +19,7 @@ clean() {
 	clear
 }
 
-nodejs() {
+f_nodejs() {
 	echo -e "\n### Checking for nodejs"
 	VAR=""
 	VAR=`sudo dpkg -l | grep -a -e "nodejs"`
@@ -34,7 +34,7 @@ nodejs() {
 	echo -e "Done..."
 }
 
-npm() {
+f_npm() {
 	echo -e "\n### Checking for npm"
 	VAR=""
 	VAR=`sudo dpkg -l | grep -a -e "npm"`
@@ -49,7 +49,7 @@ npm() {
 	echo -e "Done..."
 }
 
-files() {
+f_files() {
 	echo -e "\n### Checking for package.json file"
 	VAR=""
 	VAR=`ls -l $DPATH | grep -ae "package.json"`
@@ -116,12 +116,12 @@ files() {
 	echo -e "Done..."
 }
 
-web3() {
+f_web3() {
 	echo -e "\n### Checking for web3"
 	VAR=""
 	cd $DPATH
 	VAR=`npm list --depth=0 | grep -ae "web3"`
-
+	
 	if [ -z "$VAR" ]; then
 		echo "-> not installed"
 		echo "-> install package..."
@@ -132,11 +132,11 @@ web3() {
 	echo -e "Done..."
 }
 
-ganache() {
+f_ganache() {
 	echo -e "\n### Checking for ganache-cli"
 	VAR=""
 	cd $DPATH
-	VAR=`sudo npm list --depth=0 | grep -ae "ganache-cli"`
+	VAR=`sudo npm list -g --depth=0 | grep -ae "ganache-cli"`
 
 	if [ -z "$VAR" ]; then
 		echo "-> not installed"
@@ -148,7 +148,7 @@ ganache() {
 	echo -e "Done..."
 }
 
-golang() {
+f_golang() {
 	echo -e "\n### Checking for golang"
 	VAR=""
 	VAR=`sudo dpkg -l | grep -a -e "golang"`
@@ -163,7 +163,7 @@ golang() {
 	echo -e "Done..."
 }
 
-geth () {
+f_geth() {
 	echo -e "\n### Checking for geth"
 	VAR=""
 	VAR=`sudo ls -l /usr/local/bin | grep -ae "geth"`
@@ -194,12 +194,12 @@ geth () {
 	echo -e "Done..."
 }
 
-clean()
-nodejs()
-npm()
-web3()
-ganache()
-files()
+f_clear
+f_nodejs
+f_npm
+f_web3
+f_ganache
+f_files
 
 echo -e "\n"
 
