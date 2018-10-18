@@ -17,7 +17,7 @@ if [ "${DISPLAY::2}" = ":0" ]
 then
 
 	# call RESET web service to reset showcase
-	curl http://deviceservicea.azurewebsites.net/devices/473095323502/reset
+	#curl http://deviceservicea.azurewebsites.net/devices/473095323502/reset
 
 	sleep 5
 
