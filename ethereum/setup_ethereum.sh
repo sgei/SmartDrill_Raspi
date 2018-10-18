@@ -1,158 +1,205 @@
 #!/bin/bash
 
-IPATH="/home/pi/intershop"
-SPATH="/home/pi/intershop/scripts"
-DPATH="/home/pi/intershop/scripts/drill"
-MODULE=""
+HOME="/home/pi"
+SETUP_PATH=`pwd`
+IPATH="$HOME/intershop"
+SPATH="$HOME/intershop/scripts"
+DPATH="$HOME/intershop/scripts/drill"
+VAR=""
 
-clear
+clean() {
+	clear
 
-echo -e "\n### Checking for nodejs"
-MODULE=""
-MODULE=`sudo dpkg -l | grep -a -e "nodejs"`
+	sudo apt-get autoremove
+	sudo apt-get autoclean
+	sudo apt-get clean
+	sudo apt-get update
+	sudo apt-get -y upgrade
 
-if [ -z "$MODULE" ]; then
-	echo "-> not installed"
-	echo "-> install package..."
-	sudo apt-get -qy install nodejs
-else
-	echo "-> package already installed"
-fi
-echo -e "Done..."
+	clear
+}
 
-read -p "press <ENTER> to continue"
+nodejs() {
+	echo -e "\n### Checking for nodejs"
+	VAR=""
+	VAR=`sudo dpkg -l | grep -a -e "nodejs"`
 
-echo -e "\n### Checking for npm"
-MODULE=""
-MODULE=`sudo dpkg -l | grep -a -e "npm"`
-
-if [ -z "$MODULE" ]; then
-	echo "-> not installed"
-	echo "-> install package..."
-	sudo apt-get -qy install npm
-else
-	echo "-> package already installed"
-fi
-echo -e "Done..."
-
-read -p "press <ENTER> to continue"
-
-echo -e "\n### Checking for package.json file"
-MODULE=""
-MODULE=`ls -l $DPATH | grep -ae "package.json"`
-
-if [ -z "$MODULE" ]; then
-	echo "-> file does not exist"
-	echo "-> create file..."
-	cp package.json $DPATH
-else
-	echo "-> file exist"
-fi
-echo -e "Done..."
-
-echo -e "\n### Checking for web3"
-MODULE=""
-cd $DPATH
-MODULE=`npm list --depth=0 | grep -ae "web3"`
-
-if [ -z "$MODULE" ]; then
-	echo "-> not installed"
-	echo "-> install package..."
-	npm install web3
-else
-	echo "-> package already installed"
-fi
-echo -e "Done..."
-
-read -p "press <ENTER> to continue"
-
-echo -e "\n### Checking for golang"
-MODULE=""
-MODULE=`sudo dpkg -l | grep -a -e "golang"`
-
-if [ -z "$MODULE" ]; then
-	echo "-> not installed"
-	echo "-> install package..."
-	sudo apt-get -yq install golang
-else
-	echo "-> package already installed"
-fi
-echo -e "Done..."
-
-read -p "press <ENTER> to continue"
-
-echo -e "\n### Checking for geth"
-MODULE=""
-MODULE=`sudo ls -l /usr/local/bin | grep -ae "geth"`
-ARM7=`cat /proc/cpuinfo | grep -ae "ARMv7"`
-ARM6=`cat /proc/cpuinfo | grep -ae "ARMv6"`
-
-if [ -z "$MODULE" ]; then
-	echo "-> not installed"
-	echo "-> install package..."
-	cd $IPATH
-	if [ -n "ARM7" ]; then
-		wget https://gethstore.blob.core.windows.net/builds/geth-linux-arm7-1.8.17-8bbe7207.tar.gz
-		tar -xvzf geth-linux-arm7-1.8.17-8bbe7207.tar.gz
-		sudo mv geth-linux-arm7-1.8.17-8bbe7207/geth /usr/local/bin
-		sudo chown root:staff /usr/local/bin/geth
-		rm -rf geth-linux-arm7-1.8.17-8bbe7207*
+	if [ -z "$VAR" ]; then
+		echo "-> not installed"
+		echo "-> install package..."
+		sudo apt-get -qy install nodejs
+	else
+		echo "-> package already installed"
 	fi
-	if [ -n "ARM6" ]; then
-		wget https://gethstore.blob.core.windows.net/builds/geth-linux-arm6-1.8.17-8bbe7207.tar.gz
-		tar -xvzf geth-linux-arm6-1.8.17-8bbe7207.tar.gz
-		sudo mv geth-linux-arm6-1.8.17-8bbe7207/geth /usr/local/bin
-		sudo chown root:staff /usr/local/bin/geth
-		rm -rf geth-linux-arm6-1.8.17-8bbe7207*
+	echo -e "Done..."
+}
+
+npm() {
+	echo -e "\n### Checking for npm"
+	VAR=""
+	VAR=`sudo dpkg -l | grep -a -e "npm"`
+
+	if [ -z "$VAR" ]; then
+		echo "-> not installed"
+		echo "-> install package..."
+		sudo apt-get -qy install npm
+	else
+		echo "-> package already installed"
 	fi
-else
-	echo "-> package already installed"
-fi
-echo -e "Done..."
+	echo -e "Done..."
+}
 
-read -p "press <ENTER> to continue"
+files() {
+	echo -e "\n### Checking for package.json file"
+	VAR=""
+	VAR=`ls -l $DPATH | grep -ae "package.json"`
 
-echo -e "\n### Checking for ganache-cli"
-MODULE=""
-cd $DPATH
-MODULE=`npm list --depth=0 | grep -ae "ganache-cli"`
+	if [ -z "$VAR" ]; then
+		echo "-> file does not exist"
+		echo "-> create file..."
+		cp $SETUP_PATH/package.json $DPATH
+	else
+		echo "-> file exist"
+	fi
+	echo -e "Done..."
 
-if [ -z "$MODULE" ]; then
-	echo "-> not installed"
-	echo "-> install package..."
-	npm install ganache-cli
-else
-	echo "-> package already installed"
-fi
-echo -e "Done..."
+	echo -e "\n### Checking for README.md file"
+	VAR=""
+	VAR=`ls -l $DPATH | grep -ae "README.md"`
 
-read -p "press <ENTER> to continue"
+	if [ -z "$VAR" ]; then
+		echo "-> file does not exist"
+		echo "-> create file..."
+		cp $SETUP_PATH/README.md $DPATH
+	else
+		echo "-> file exist"
+	fi
+	echo -e "Done..."
 
-echo -e "\n### Checking for config.json"
-MODULE=""
-MODULE=`ls -l $DPATH | grep -ae "config.json"`
+	echo -e "\n### Checking for config.json"
+	VAR=""
+	VAR=`ls -l $DPATH | grep -ae "config.json"`
 
-if [ -z "$MODULE" ]; then
-	echo "-> file does not exist"
-	echo "-> create file..."
-	cp config.json $DPATH
-else
-	echo "-> file exist"
-fi
-echo -e "Done..."
+	if [ -z "$VAR" ]; then
+		echo "-> file does not exist"
+		echo "-> create file..."
+		cp $SETUP_PATH/config.json $DPATH
+	else
+		echo "-> file exist"
+	fi
+	echo -e "Done..."
 
-echo -e "\n### Checking for index.js"
-MODULE=""
-MODULE=`ls -l $DPATH | grep -ae "index.js"`
+	echo -e "\n### Checking for index.js"
+	VAR=""
+	VAR=`ls -l $DPATH | grep -ae "index.js"`
 
-if [ -z "$MODULE" ]; then
-	echo "-> file does not exist"
-	echo "-> create file..."
-	cp index.js $DPATH
-else
-	echo "-> file exist"
-fi
-echo -e "Done..."
+	if [ -z "$VAR" ]; then
+		echo "-> file does not exist"
+		echo "-> create file..."
+		cp $SETUP_PATH/index.js $DPATH
+	else
+		echo "-> file exist"
+	fi
+	echo -e "Done..."
+
+	echo -e "\n### Checking for ethereum activation"
+	VAR=""
+	VAR=`cat $DPATH/reset.sh | grep -ae "ETHEREUM=" | cut -d "=" -f2`
+
+	if [ "$VAR" == "0" ]; then
+		echo "-> ethereum not active"
+		echo "-> activate ethereum"
+		flock $DPATH/reset.sh sed -i -e "s/ETHEREUM=.*/ETHEREUM=1/" $DPATH/reset.sh
+	else
+		echo "-> ethereum activated"
+	fi
+	echo -e "Done..."
+}
+
+web3() {
+	echo -e "\n### Checking for web3"
+	VAR=""
+	cd $DPATH
+	VAR=`npm list --depth=0 | grep -ae "web3"`
+
+	if [ -z "$VAR" ]; then
+		echo "-> not installed"
+		echo "-> install package..."
+		npm install web3
+	else
+		echo "-> package already installed"
+	fi
+	echo -e "Done..."
+}
+
+ganache() {
+	echo -e "\n### Checking for ganache-cli"
+	VAR=""
+	cd $DPATH
+	VAR=`sudo npm list --depth=0 | grep -ae "ganache-cli"`
+
+	if [ -z "$VAR" ]; then
+		echo "-> not installed"
+		echo "-> install package..."
+		sudo npm install -g ganache-cli
+	else
+		echo "-> package already installed"
+	fi
+	echo -e "Done..."
+}
+
+golang() {
+	echo -e "\n### Checking for golang"
+	VAR=""
+	VAR=`sudo dpkg -l | grep -a -e "golang"`
+
+	if [ -z "$VAR" ]; then
+		echo "-> not installed"
+		echo "-> install package..."
+		sudo apt-get -yq install golang
+	else
+		echo "-> package already installed"
+	fi
+	echo -e "Done..."
+}
+
+geth () {
+	echo -e "\n### Checking for geth"
+	VAR=""
+	VAR=`sudo ls -l /usr/local/bin | grep -ae "geth"`
+	ARM7=`cat /proc/cpuinfo | grep -ae "ARMv7"`
+	ARM6=`cat /proc/cpuinfo | grep -ae "ARMv6"`
+
+	if [ -z "$VAR" ]; then
+		echo "-> not installed"
+		echo "-> install package..."
+		cd $IPATH
+		if [ -n "ARM7" ]; then
+			wget https://gethstore.blob.core.windows.net/builds/geth-linux-arm7-1.8.17-8bbe7207.tar.gz
+			tar -xvzf geth-linux-arm7-1.8.17-8bbe7207.tar.gz
+			sudo mv geth-linux-arm7-1.8.17-8bbe7207/geth /usr/local/bin
+			sudo chown root:staff /usr/local/bin/geth
+			rm -rf geth-linux-arm7-1.8.17-8bbe7207*
+		fi
+		if [ -n "ARM6" ]; then
+			wget https://gethstore.blob.core.windows.net/builds/geth-linux-arm6-1.8.17-8bbe7207.tar.gz
+			tar -xvzf geth-linux-arm6-1.8.17-8bbe7207.tar.gz
+			sudo mv geth-linux-arm6-1.8.17-8bbe7207/geth /usr/local/bin
+			sudo chown root:staff /usr/local/bin/geth
+			rm -rf geth-linux-arm6-1.8.17-8bbe7207*
+		fi
+	else
+		echo "-> package already installed"
+	fi
+	echo -e "Done..."
+}
+
+clean()
+nodejs()
+npm()
+web3()
+ganache()
+files()
 
 echo -e "\n"
 

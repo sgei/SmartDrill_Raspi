@@ -5,6 +5,7 @@ GPS_LONGITUDE=11.584776
 # changed by Azure (via smartdrill_azure.py)
 MODE=0
 LOCK_CLOUD=0
+RESET=0
 # changed by drill.py or manually
 LOCK_LOCAL=0
 USAGE_TIME_MODE_1=0

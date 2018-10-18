@@ -4,6 +4,7 @@
 *.py	text
 *.pyc	binary
 *.sh	text
+*.json	text
 
 *.md	text
 *.dat	text

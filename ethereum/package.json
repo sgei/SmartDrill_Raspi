@@ -2,5 +2,7 @@
 	"name": "intershop-ethereum",
 	"version": "1.0.0",
 	"description": "Intershop Smartdrill Ethereum",
-	"repository": "gitlab:user/repo"
+	"repository": "gitlab:user/repo",
+	"license": "UNLICENSED",
+	"dependencies": {}
 }

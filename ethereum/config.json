@@ -1,13 +1,12 @@
-
 {
-  "path": "/home/pi/intershop/scripts/drill/",
+	"path": "/home/pi/intershop/scripts/drill/",
 
-  "payment": {
-    "usage_multiplicator_1": 2,
-    "usage_multiplicator_2": 3,
-    "usage_multiplicator_0": 1,
-    "amount": 10,
-    "lower_percentage": 0.8,
-    "upper_percentage": 1.2
-  }
+	"payment": {
+		"usage_multiplicator_1": 1,
+		"usage_multiplicator_2": 1,
+		"usage_multiplicator_3": 1,
+		"amount": 10,
+		"lower_percentage": 0.8,
+		"upper_percentage": 1.2
+	}
 }
