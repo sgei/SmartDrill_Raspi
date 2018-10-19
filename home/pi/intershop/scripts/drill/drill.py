@@ -24,6 +24,7 @@ LOCK_CLOUD = 0
 LOCK_LOCAL = 0
 
 COMMAND = ''
+TIME = ''
 
 # ****************************************************************************************************
 # Initialize GPIO, BMC pin number
@@ -89,13 +90,15 @@ def check_locked():
     return 0
 
 def loop():
-  global MODE, LOCK_CLOUD, LOCK_LOCAL
+  global TIME, MODE, LOCK_CLOUD, LOCK_LOCAL
+
+  TIME =  time.strftime("%d %b %Y %H:%M:%S")
 
   MODE = read_drill_dat('MODE')
   LOCK_CLOUD = read_drill_dat('LOCK_CLOUD')
   LOCK_LOCAL = int(check_locked())
 
-  print "MODE=%d | LOCK_CLOUD=%d | LOCK_LOCAL=%d" % ( MODE, LOCK_CLOUD, LOCK_LOCAL )
+  print "[%s] MODE=%d | LOCK_CLOUD=%d | LOCK_LOCAL=%d" % ( TIME, MODE, LOCK_CLOUD, LOCK_LOCAL )
 
 # ****************************************************************************************************
 # Button: DRILL

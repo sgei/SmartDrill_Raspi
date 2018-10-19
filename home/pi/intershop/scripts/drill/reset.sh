@@ -27,17 +27,20 @@ do
 		sleep 10
 	else
 		sleep 2
+		lxterminal --working-directory=$DRILL_PATH --command="python payment.py"
 	fi
 
 	while [ $RESET -eq $TEMP1 ]
 	do
 		sleep 1
 		RESET=`cat $DRILL_PATH/$DAT_FILE | grep -a -e "RESET" | cut -d "=" -f2`
-		echo $RESET
+		d=`date +"%d %b %Y %T"`
+		echo "[$d] RESET: $RESET"
 	done
 
 	# kill drill.py
 	kill `ps -aux | grep -a -e "drill.py" | grep -a -v "grep" | tr -s " " | cut -d " " -f2`
+	kill `ps -aux | grep -a -e "payment.py" | grep -a -v "grep" | tr -s " " | cut -d " " -f2`
 	# kill ganace-cli
 	if [ "$ETHEREUM" == "1" ]; then
 		kill `ps -aux | grep -a -e "ganache-cli" | grep -a -v "grep" | tr -s " " | cut -d " " -f2`
