@@ -17,27 +17,30 @@ sudo apt-get -y upgrade
 clear
 
 echo -e "\n### Copy "intershop"-folder to $HOME..."
+read -p "press <ENTER> to continue"
 cp -r .$HOME/intershop $HOME
 echo -e "Done..."
 
 echo -e "\n### Set file execution rights..."
+read -p "press <ENTER> to continue"
 chmod +x $SPATH/*.sh
 chmod +x $DPATH/autostart.sh
 chmod +x $DPATH/drill.py
+chmod +x $DPATH/payment.py
 chmod +x $DPATH/reset.sh
 chmod +x $DPATH/smartdrill_azure.py
 chmod +x $SPATH/shutdown/shutdown.py
 echo -e "Done..."
 
 echo -e "\n### Install service for shutdown script..."
+read -p "press <ENTER> to continue"
 sudo cp $SPATH/shutdown/shutdown.service /lib/systemd/system
 sudo systemctl enable shutdown.service
 sudo systemctl start shutdown.service
 echo -e "Done..."
 
-read -p "press <ENTER> to continue"
-
 echo -e "\n### Checking for azure-iothub-device-client..."
+read -p "press <ENTER> to continue"
 VAR=""
 VAR=`sudo pip freeze | grep -a -e "azure-iothub-device-client"`
 
@@ -50,9 +53,8 @@ else
 fi
 echo -e "Done..."
 
-read -p "press <ENTER> to continue"
-
 echo -e "\n### Checking for libboost-python-dev..."
+read -p "press <ENTER> to continue"
 VAR=""
 VAR=`sudo dpkg -l | grep -a -e "libboost-python-dev"`
 
@@ -65,9 +67,8 @@ else
 fi
 echo -e "Done..."
 
-read -p "press <ENTER> to continue"
-
 echo -e "\n### Checking for inotify..."
+read -p "press <ENTER> to continue"
 VAR=""
 VAR=`sudo pip freeze | grep -a -e "inotify" | grep -a -v "pyinotify"`
 
@@ -80,9 +81,8 @@ else
 fi
 echo -e "Done..."
 
-read -p "press <ENTER> to continue"
-
 echo -e "\n### Install autostart script..."
+read -p "press <ENTER> to continue"
 VAR=""
 VAR=`cat $HOME/.config/lxsession/LXDE-pi/autostart | grep -a -e "autostart.sh"`
 
