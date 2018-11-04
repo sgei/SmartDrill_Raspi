@@ -2,7 +2,7 @@
 # shutdown Raspberry Pi via button
 
 import RPi.GPIO as GPIO
-import subprocess, time, sys, syslog, threading
+import subprocess, time, sys, syslog, threading, signal
 from sgei_gpio import OUT_BLINK
 
 IN_PORT = 17                  # Input Shutdown-Button
@@ -125,6 +125,13 @@ def buttonISR(pin, pin_state = -1):
 
 # Switch on the interrupt for the shutdown button
 GPIO.add_event_detect(IN_PORT, GPIO.BOTH, callback=buttonISR)
+
+def signal_term_handler(signal, frame):
+  GPIO.remove_event_detect(IN_PORT)
+  print ("\nKilled!")
+  sys.exit(0)
+
+signal.signal(signal.SIGTERM, signal_term_handler)
 
 syslog.syslog('Shutdown.py started');
 while True:

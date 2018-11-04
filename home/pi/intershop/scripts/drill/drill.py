@@ -2,7 +2,7 @@
 # shutdown Raspberry Pi via button
 
 import RPi.GPIO as GPIO
-import os, time, sys, threading
+import os, time, sys, threading, signal
 from filelock import FileLock
 
 DAT_FILE = '/home/pi/intershop/scripts/drill/drill.dat'
@@ -225,6 +225,14 @@ def battery_buttonISR(pin, pin_state = -1):
 # Switch on the interrupts for the buttons
 GPIO.add_event_detect(BUTTON_DRILL_PORT, GPIO.BOTH, callback=drill_buttonISR)
 GPIO.add_event_detect(BUTTON_BATTERY_PORT, GPIO.BOTH, callback=battery_buttonISR)
+
+def signal_term_handler(signal, frame):
+  GPIO.remove_event_detect(BUTTON_DRILL_PORT)
+  GPIO.remove_event_detect(BUTTON_BATTERY_PORT)
+  print ("\nKilled!")
+  sys.exit(0)
+
+signal.signal(signal.SIGTERM, signal_term_handler)
 
 while True:
   try:
