@@ -2,9 +2,11 @@ ls #!/bin/bash
 
 PROG=`basename $0`								# Program-Name
 DRILL_PATH=/home/pi/intershop/scripts/drill		# Path for main-script and config-file
-DAT_FILE=drill.dat								# Name of the CDAT-file
+DAT_FILE=drill.dat								# Name of the DAT-file
 
 ETHEREUM=0
+
+lxterminal --working-directory=$DRILL_PATH --command="python drill.py"
 
 LOOP=1
 
@@ -12,10 +14,6 @@ while [ $LOOP -eq 1 ]
 do
 	RESET=`cat $DRILL_PATH/$DAT_FILE | grep -a -e "RESET" | cut -d "=" -f2`
 	TEMP1=$RESET
-
-	cd $DRILL_PATH
-
-	lxterminal --working-directory=$DRILL_PATH --command="python drill.py"
 
 	if [ "$ETHEREUM" == "1" ]; then
 		sleep 5
@@ -38,8 +36,7 @@ do
 		echo "[$d] RESET: $RESET"
 	done
 
-	# kill drill.py
-	kill `ps -aux | grep -a -e "drill.py" | grep -a -v "grep" | tr -s " " | cut -d " " -f2`
+	# kill payment.py
 	kill `ps -aux | grep -a -e "payment.py" | grep -a -v "grep" | tr -s " " | cut -d " " -f2`
 	# kill ganace-cli
 	if [ "$ETHEREUM" == "1" ]; then

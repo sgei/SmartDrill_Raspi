@@ -15,12 +15,6 @@ reset_file="reset.sh"
 # auf Standarddisplay ausfuehren
 if [ "${DISPLAY::2}" = ":0" ]
 then
-
-	# call RESET web service to reset showcase
-	#curl http://deviceservicea.azurewebsites.net/devices/473095323502/reset
-
-	sleep 5
-
 	# create Output-File
 	touch $output_file
 
