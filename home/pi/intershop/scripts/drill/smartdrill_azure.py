@@ -245,7 +245,7 @@ def set_drill_dat(changes, filename = DRILL_DAT, lockname = DRILL_DAT_LOCK):
 
       m = re.search(r'^\s+', t[1])
       spc = m.group(0) if not m is None else ''
-      lines += ( '%s=%s%s' % ( t[0], spc, repr(changes[key]), ), )
+      lines += ( '%s=%s%s' % ( t[0], spc, changes[key], ), )
       changes.pop(key)
 
     if not DRILL_DAT_SEQ is None:
@@ -256,7 +256,7 @@ def set_drill_dat(changes, filename = DRILL_DAT, lockname = DRILL_DAT_LOCK):
 
     changes['seq'] = DRILL_DAT_SEQ
     for key, val in changes.items():
-      lines += ( '%s=%s' % ( key.upper(), repr(val), ), )
+      lines += ( '%s=%s' % ( key.upper(), val, ), )
 
     f.seek(0, os.SEEK_SET)
     for line in lines:
@@ -443,7 +443,7 @@ def device_twin_callback(update_state, payload, client):
 
     if desired:
       changes = {}
-      for key in ( 'reset', 'mode', 'lock_cloud', 'lock_local', ):
+      for key in ( 'reset', 'mode', 'lock_cloud', 'lock_local', 'gps_latitude', 'gps_longitude', ):
         desired_val = desired.get(key, None)
         if desired_val is None:
           continue
